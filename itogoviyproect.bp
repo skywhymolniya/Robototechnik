@@ -9,7 +9,7 @@ MotorC.IsMedium()
 Sensor.SetMode(2,0)
 Sensor.SetMode(3,0)
 
-'Функция которая позволяет ездить по ровно линии
+'Функция, которая позволяет ездить ровно по линии
 Function PID(in number speed, in number kp)
   d2 = 100
   d3 = 100
@@ -59,7 +59,7 @@ Sub Main
   Program.Delay(200)
   MotorA.OffAndBrake()
   
-  'Едем к второй банке
+  'Едем ко второй банке
   Motor.MoveSync("BC", 30, -30, 400, "True")
   Program.Delay(200)
   Motor.MoveSync("BC", 0, -50, 500, "True")
