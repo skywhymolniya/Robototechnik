@@ -1,0 +1,139 @@
+folder "prjs" "Shipilov"
+
+'определение моторов
+MotorA.IsMedium()
+MotorB.IsMedium()
+MotorC.IsMedium()
+
+'опредение датчиков
+Sensor.SetMode(2,0)
+Sensor.SetMode(3,0)
+
+'Функция которая позволяет ездить по ровно линии
+Function PID(in number speed, in number kp)
+  d2 = 100
+  d3 = 100
+  MotorC.ResetCount()
+  deg = MotorC.GetTacho()
+  while d2 > 20 or d3 > 20 or deg < 100
+    d2 = Sensor2.Raw1()
+    d3 = Sensor3.Raw1()
+    deg = MotorC.GetTacho()
+    e = d3 - d2
+    Up = e * kp
+    MB = speed - Up
+    MC = speed + Up
+    MotorB.StartPower(-MB)
+    MotorC.StartPower(MC)
+  EndWhile
+  MotorBC.OffAndBrake()
+EndFunction  
+
+'Основная фунция
+Sub Main
+
+  'Доезжаем до первой банки
+  PID(50, 0.5)
+  Motor.MoveSync("BC", 0, 50, 500, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", -30, 30, 110, "True")
+  Program.Delay(200)
+  'Берем певую банку
+  MotorA.StartPower(-100)
+  Program.Delay(200)
+
+  'Едем к месту выгрузки
+  Motor.MoveSync("BC", 30, 0, 600, "True")
+  Program.Delay(200)
+  PID(50, 0.5)
+  Program.Delay(200)
+  Motor.MoveSync("BC", 0, 30, 535, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", -30, 30, 450, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 0, 50, 500, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", -30, 30, 400, "True")
+  Program.Delay(400)
+  MotorA.StartPower(100)
+  Program.Delay(200)
+  MotorA.OffAndBrake()
+  
+  'Едем к второй банке
+  Motor.MoveSync("BC", 30, -30, 400, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 0, -50, 500, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 30, -30, 450, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 30, 0, 535, "True")
+  Program.Delay(200)
+  PID(50, 0.5)
+  Program.Delay(200)
+  Motor.MoveSync("BC", -50, 0, 500, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", -20, 20, 110, "True")
+  Program.Delay(200)
+
+  'Берем вторую банку
+  MotorA.StartPower(-100)
+  Program.Delay(200)
+
+  'Едем к месту выгрузки
+  Motor.MoveSync("BC", 20, -20, 110, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 0, -30, 500, "True")
+  Program.Delay(200)
+  PID(50, 0.5)
+  Program.Delay(200)
+  Motor.MoveSync("BC", 0, 30, 535, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", -30, 30, 450, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 0, 50, 450, "True")
+  Program.Delay(400)
+  MotorA.StartPower(100)
+  Program.Delay(200)
+  MotorA.OffAndBrake()
+
+ 'Едем к третьей банке
+  Motor.MoveSync("BC", 0, -50, 450, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 30, -30, 450, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 30, 30, 480, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", -50, 50, 360, "True")
+  Program.Delay(400)
+
+  'Берем третью банку
+  MotorA.StartPower(-100)
+  Program.Delay(200)
+  MotorA.OffAndBrake()
+  Program.Delay(200)
+
+  'Едем к месту выгрузки
+  Motor.MoveSync("BC", 30, 30, 510, "True")
+  Program.Delay(200)
+  PID(50, 0.5)
+  Program.Delay(400)
+  MotorA.StartPower(100)
+  Program.Delay(200)
+  MotorA.OffAndBrake()
+  Program.Delay(200)
+  Motor.MoveSync("BC", 20, -20, 210, "True")
+  Program.Delay(200)
+  Motor.MoveSync("BC", 30, 0, 500, "True")
+  Program.Delay(200)
+
+  'Едем к финишу
+  PID(50, 0.5)
+  Program.Delay(200)
+  
+  Motor.MoveSync("BC", 30, -30, 420, "True")
+  Program.Delay(200)
+  
+
+EndSub
+
+Main()
